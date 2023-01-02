@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+@import 'src/palettes.scss';
+@include mat.core();
+
+$wordle-green: #6aaa64;
+$wordle-yellow: #c9b458;
+$wordle-gray: #787c7e;
+$wordle-outline: #d3d6da;
+
+$wordle-primary: mat.define-palette($green-palette);
+$wordle-accent: mat.define-palette($gray-palette);
+$wordle-warn: mat.define-palette($yellow-palette);
+
+// $wordle-theme: mat-light-theme($wordle-primary, $wordle-accent, $wordle-warn);
+$wordle-theme: mat.define-light-theme((
+    color: (
+        primary: $wordle-primary,
+        accent: $wordle-accent,
+        warn: $wordle-warn
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+));
+
+@include mat.all-component-themes($wordle-theme);

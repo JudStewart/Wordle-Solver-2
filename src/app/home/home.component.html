@@ -1,7 +1,59 @@
 <div class="wordle-container">
-    <div class="wordle-item">c</div>
-    <div class="wordle-item">l</div>
-    <div class="wordle-item">o</div>
-    <div class="wordle-item">u</div>
-    <div class="wordle-item">t</div>
+  <div id="guesses-container" *ngFor="let word of words">
+    <div class="wordle-letter" *ngFor="let letter of word">{{letter}}</div>
+  </div>
+
+  <div id="keyboard-container">
+    <div class="keyboard-row">
+      <button
+        mat-flat-button
+        style="background-color: #d3d6da"
+        *ngFor="let c of 'QWERTYUIOP'.split('')"
+        (click)="insertLetter(c)"
+      >
+        {{ c }}
+      </button>
+    </div>
+    <div class="keyboard-row">
+      <div class="side-space"></div>
+      <button
+        mat-flat-button
+        style="background-color: #d3d6da"
+        *ngFor="let c of 'ASDFGHJKL'.split('')"
+        (click)="insertLetter(c)"
+      >
+        {{ c }}
+      </button>
+      <div class="side-space"></div>
+    </div>
+    <div class="keyboard-row">
+      <button
+        #enterButton
+        mat-flat-button
+        style="background-color: #d3d6da"
+        class="wide-button"
+      >
+        ENTER
+      </button>
+      <button
+        #{{c}}
+        mat-flat-button
+        style="background-color: #d3d6da"
+        *ngFor="let c of 'ZXCVBNM'.split('')"
+        (click)="insertLetter(c)"
+      >
+        {{ c }}
+      </button>
+      <button
+        mat-flat-button
+        style="background-color: #d3d6da"
+        class="wide-button"
+        (click)="backspace()"
+      >
+        ⌫
+      </button>
+    </div>
+  </div>
 </div>
+
+debug: {{words.toString()}}

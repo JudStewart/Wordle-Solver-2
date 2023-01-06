@@ -1,16 +1,65 @@
 @import 'src/themes.scss';
 
 .wordle-container {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto;
-    background-color: white;
-    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+    min-height: 100%;
+    flex-direction: column;
 }
 
 .wordle-letter {
     background-color: white;
     border: 2px solid $wordle-outline;
     padding: 10px;
-    font-size: 32pt;
+    font-size: 24pt;
     text-align: center;
+    min-width: 60px;
+    min-height: 60px;
+}
+
+#guesses-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    background-color: white;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#keyboard-container {
+    height: 200px;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto 8px;
+    touch-action: manipulation;
+}
+
+.keyboard-row button {
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 16pt;
+    border: 0;
+    padding: 0;
+    height: 64px;
+    cursor: pointer;
+    color: black;
+    flex-grow: 1;
+    margin-right: 6px;
+    user-select: none;
+    text-align: center;
+}
+
+button.wide-button {
+    flex-grow: 1.5
+}
+
+.side-space {
+    flex-grow: .5;
 }

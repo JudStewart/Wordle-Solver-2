@@ -1,6 +1,10 @@
 <div class="wordle-container">
   <div id="guesses-container" *ngFor="let word of words">
-    <div class="wordle-letter" *ngFor="let letter of word">{{letter}}</div>
+    <div class="wordle-letter" *ngFor="let letter of word" (click)="letter.toggleColor()" [ngStyle]="{'background-color': letter.style}">
+      <span (click)="letter.toggleColor()">
+        {{letter.letter}}
+      </span>
+    </div>
   </div>
 
   <div id="keyboard-container">

@@ -1,9 +1,7 @@
 <div class="wordle-container">
   <div id="guesses-container" *ngFor="let word of words">
-    <div class="wordle-letter" *ngFor="let letter of word" (click)="letter.toggleColor()" [ngStyle]="{'background-color': letter.style}">
-      <span (click)="letter.toggleColor()">
-        {{letter.letter}}
-      </span>
+    <div class="wordle-letter not-selectable" *ngFor="let letter of word" (click)="letter.toggleColor()" [ngStyle]="{'background-color': letter.style}">
+      {{letter.letter}}
     </div>
   </div>
 
@@ -12,7 +10,7 @@
       <button
         mat-flat-button
         style="background-color: #d3d6da"
-        *ngFor="let c of 'QWERTYUIOP'.split('')"
+        *ngFor="let c of 'qwertyuiop'.split('')"
         (click)="insertLetter(c)"
       >
         {{ c }}
@@ -23,7 +21,7 @@
       <button
         mat-flat-button
         style="background-color: #d3d6da"
-        *ngFor="let c of 'ASDFGHJKL'.split('')"
+        *ngFor="let c of 'asdfghjkl'.split('')"
         (click)="insertLetter(c)"
       >
         {{ c }}
@@ -36,6 +34,7 @@
         mat-flat-button
         style="background-color: #d3d6da"
         class="wide-button"
+        (click)="solve()"
       >
         ENTER
       </button>
@@ -43,7 +42,7 @@
         #{{c}}
         mat-flat-button
         style="background-color: #d3d6da"
-        *ngFor="let c of 'ZXCVBNM'.split('')"
+        *ngFor="let c of 'zxcvbnm'.split('')"
         (click)="insertLetter(c)"
       >
         {{ c }}
@@ -60,4 +59,8 @@
   </div>
 </div>
 
-debug: {{words.toString()}}
+<div id="answers">
+  <ul>
+    <li *ngFor="let word of answers">{{word}}</li>
+  </ul>
+</div>

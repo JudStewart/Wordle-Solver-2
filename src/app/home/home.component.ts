@@ -6,6 +6,8 @@ import {
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 
+
+const WordleWords: Array<string> = require('./wordle-words.json')
 const REGEX: RegExp = new RegExp('[a-zA-Z]');
 
 @Component({
@@ -21,6 +23,7 @@ export class HomeComponent {
   @ViewChildren(HomeComponent) children!: QueryList<HomeComponent>;
 
   words: Array<Array<WordleLetter>> = [[]];
+  answers: Array<string> = [];
 
   insertLetter(c: string) {
     let last = this.words.at(-1);
@@ -48,20 +51,23 @@ export class HomeComponent {
     } else if (event.key == 'Backspace' || event.key == 'Delete') {
       this.backspace();
     } else if (event.key.length == 1 && REGEX.test(event.key)) {
-      this.insertLetter(event.key.toUpperCase());
+      this.insertLetter(event.key.toLowerCase());
     }
   }
 
   solve() {
     //declare an array to store all filters
-    let filters = [];
+    let filters: Array<(data: string) => boolean> = [];
     
     this.words.forEach((word) => {
       //get actual word as string
       let actualWord = this.letterArrayToString(word)
+      console.log("[DEBUG] Checking for word " + actualWord)
 
       //check for duplicate letters
       if (this.hasRepeatCharacters(actualWord)) {
+        
+        console.log("[DEBUG] Duplicate letters found...")
         
         //find duplicate letter(s)
         let checked = new Set();
@@ -120,7 +126,9 @@ export class HomeComponent {
       
       // if there are no repeated letters
       else {
+        console.log("[DEBUG] No duplicate letters.")
         word.forEach (letter => {
+          console.log("[DEBUG] For letter " + letter.letter + ", color " + letter.color.toString() + " in position " + letter.position + " filter added (new filter amount is " + filters.length + ")")
           switch (letter.color) 
           {
             case WordleColor.GRAY:
@@ -135,14 +143,26 @@ export class HomeComponent {
               break;
             case WordleColor.YELLOW:
               filters.push((str: string): boolean => {
-                return !str.charAt(letter.position) && str.includes(letter.letter)
+                return !(str.charAt(letter.position) == letter.letter) && str.includes(letter.letter)
               })
               break;
           }
         })
       }
-      
     });
+    
+    
+    let possibleWords = WordleWords
+    console.log("[DEBUG] Applying filters. Initial array size is " + possibleWords.length)
+    filters.forEach(filter => {
+      possibleWords = possibleWords.filter(filter)
+      console.log("[DEBUG] Filter applied. New length is " + possibleWords.length + ". Check against 'usual': " + filter("usual"))
+    })
+    
+    console.log("[DEBUG] Filtering complete, length of possible words is " + possibleWords.length)
+    
+    this.answers = possibleWords
+    
   }
   
   // -------- Utility Functions --------
@@ -159,7 +179,7 @@ export class HomeComponent {
   
   letterArrayToString(arr: Array<WordleLetter>): string {
     let output = ''
-    arr.forEach((letter) => (output += letter));
+    arr.forEach((letter) => (output += letter.letter));
     return output;
   }
 }
@@ -198,6 +218,6 @@ class WordleLetter {
 
 enum WordleColor {
   GRAY,
-  GREEN,
   YELLOW,
+  GREEN,
 }

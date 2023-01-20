@@ -15,7 +15,8 @@
     background-color: $wordle-gray;
     color: white;
     padding: 10px;
-    font-size: 24pt;
+    font-size: 32pt;
+    font-weight: bold;
     text-align: center;
     min-width: 60px;
     min-height: 60px;
@@ -24,6 +25,7 @@
     align-items: center;
     margin: auto;
     position: relative;
+    text-transform: uppercase;
 }
 
 #guesses-container {
@@ -47,6 +49,7 @@
     width: 100%;
     margin: 0 auto 8px;
     touch-action: manipulation;
+    text-transform: uppercase;
 }
 
 .keyboard-row button {
@@ -62,6 +65,7 @@
     margin-right: 6px;
     user-select: none;
     text-align: center;
+    text-transform: uppercase;
 }
 
 button.wide-button {
@@ -71,3 +75,13 @@ button.wide-button {
 .side-space {
     flex-grow: .5;
 }
+
+// https://stackoverflow.com/questions/2310734/how-to-make-html-text-unselectable
+.not-selectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }

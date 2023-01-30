@@ -10,11 +10,17 @@ import {MatFormFieldModule} from '@angular/material/form-field'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input'
 import {MatButtonModule} from '@angular/material/button'
+import {MatSlideToggleModule} from '@angular/material/slide-toggle'
+import { MatIconModule } from '@angular/material/icon';
+import { SettingsComponent } from './settings/settings.component';
+import {MatDialogModule} from '@angular/material/dialog'
+import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +30,11 @@ import {MatButtonModule} from '@angular/material/button'
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSlideToggleModule,
+    MatIconModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

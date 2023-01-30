@@ -6,14 +6,22 @@
 $wordle-green: #6aaa64;
 $wordle-yellow: #c9b458;
 $wordle-gray: #787c7e;
-$wordle-outline: #d3d6da;
+$wordle-key-color: #d3d6da;
+
+$wordle-green-dark: #538d4e;
+$wordle-yellow-dark: #b59f3b;
+$wordle-gray-dark: #3a3a3c;
+$wordle-key-color-dark: #818384;
 
 $wordle-primary: mat.define-palette($green-palette);
 $wordle-accent: mat.define-palette($gray-palette);
 $wordle-warn: mat.define-palette($yellow-palette);
 
-// $wordle-theme: mat-light-theme($wordle-primary, $wordle-accent, $wordle-warn);
-$wordle-theme: mat.define-light-theme((
+$wordle-primary-dark: mat.define-palette($dark-green-palette);
+$wordle-accent-dark: mat.define-palette($dark-gray-palette);
+$wordle-warn-dark: mat.define-palette($dark-yellow-palette);
+
+$wordle-light-theme: mat.define-light-theme((
     color: (
         primary: $wordle-primary,
         accent: $wordle-accent,
@@ -23,4 +31,18 @@ $wordle-theme: mat.define-light-theme((
     density: 0,
 ));
 
-@include mat.all-component-themes($wordle-theme);
+$wordle-dark-theme: mat.define-dark-theme((
+    color: (
+        primary: $wordle-primary-dark,
+        accent: $wordle-accent-dark,
+        warn: $wordle-warn-dark
+    )
+));
+
+
+@include mat.all-component-themes($wordle-light-theme);
+
+.darkMode > * {
+    @include mat.all-component-themes($wordle-dark-theme);
+    background-color: black;
+}

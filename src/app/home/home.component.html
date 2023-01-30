@@ -1,6 +1,7 @@
-<div class="wordle-container">
-  <div id="guesses-container" *ngFor="let word of words">
-    <div class="wordle-letter not-selectable" *ngFor="let letter of word" (click)="letter.toggleColor()" [ngStyle]="{'background-color': letter.style}">
+<body>
+<div class="wordle-container" mat-app-background>
+  <div id="guesses-container" *ngFor="let word of words" [ngStyle]="{'background-color': isDarkMode ? 'black' : 'white'}">
+    <div class="wordle-letter not-selectable" *ngFor="let letter of word" (click)="letter.toggleColor(isDarkMode)" [ngStyle]="{'background-color': letter.style}">
       {{letter.letter}}
     </div>
   </div>
@@ -9,7 +10,7 @@
     <div class="keyboard-row">
       <button
         mat-flat-button
-        style="background-color: #d3d6da"
+        [ngStyle]="{'background-color': isDarkMode ? '#818384' : '#d3d6da', 'color': isDarkMode ? 'white' : 'black'}"
         *ngFor="let c of 'qwertyuiop'.split('')"
         (click)="insertLetter(c)"
       >
@@ -20,7 +21,7 @@
       <div class="side-space"></div>
       <button
         mat-flat-button
-        style="background-color: #d3d6da"
+        [ngStyle]="{'background-color': isDarkMode ? '#818384' : '#d3d6da', 'color': isDarkMode ? 'white' : 'black'}"
         *ngFor="let c of 'asdfghjkl'.split('')"
         (click)="insertLetter(c)"
       >
@@ -32,7 +33,7 @@
       <button
         #enterButton
         mat-flat-button
-        style="background-color: #d3d6da"
+        [ngStyle]="{'background-color': isDarkMode ? '#818384' : '#d3d6da', 'color': isDarkMode ? 'white' : 'black'}"
         class="wide-button"
         (click)="solve()"
       >
@@ -41,7 +42,7 @@
       <button
         #{{c}}
         mat-flat-button
-        style="background-color: #d3d6da"
+        [ngStyle]="{'background-color': isDarkMode ? '#818384' : '#d3d6da', 'color': isDarkMode ? 'white' : 'black'}"
         *ngFor="let c of 'zxcvbnm'.split('')"
         (click)="insertLetter(c)"
       >
@@ -49,7 +50,7 @@
       </button>
       <button
         mat-flat-button
-        style="background-color: #d3d6da"
+        [ngStyle]="{'background-color': isDarkMode ? '#818384' : '#d3d6da', 'color': isDarkMode ? 'white' : 'black'}"
         class="wide-button"
         (click)="backspace()"
       >
@@ -58,9 +59,9 @@
     </div>
   </div>
 </div>
-
-<div id="answers">
+<div id="answers" [ngStyle]="{'background': isDarkMode ? 'black' : 'white'}">
   <ul>
-    <li *ngFor="let word of answers">{{word}}</li>
+    <li *ngFor="let word of answers" [ngStyle]="{'color': isDarkMode ? 'white' : 'black'}">{{word}}</li>
   </ul>
 </div>
+</body>

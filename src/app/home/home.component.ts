@@ -1,10 +1,11 @@
 import {
   Component,
+  HostBinding,
   HostListener,
   QueryList,
-  ViewChildren,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
+import { DarkModeServiceService } from '../dark-mode-service.service'
 
 
 const WordleWords: Array<string> = require('./wordle-words.json')
@@ -20,10 +21,24 @@ export class HomeComponent {
   //        - Auto solver for wordle (fills in colors automatically)
   //        - use extended dictionary (non wordle words)
 
-  @ViewChildren(HomeComponent) children!: QueryList<HomeComponent>;
+  @HostBinding('class') className = ''
 
   words: Array<Array<WordleLetter>> = [[]];
   answers: Array<string> = [];
+  
+  isDarkMode = false;
+  
+  constructor(public darkMode: DarkModeServiceService) {}
+  
+  ngOnInit() {
+    this.darkMode.darkMode.subscribe((darkMode) => {
+      this.className = darkMode ? 'darkMode' : ''
+      this.isDarkMode = darkMode
+      this.words.forEach((word) => {
+        word.forEach((letter) => letter.updateColor(this.isDarkMode))
+      })
+    })
+  }
 
   insertLetter(c: string) {
     let last = this.words.at(-1);
@@ -62,12 +77,9 @@ export class HomeComponent {
     this.words.forEach((word) => {
       //get actual word as string
       let actualWord = this.letterArrayToString(word)
-      console.log("[DEBUG] Checking for word " + actualWord)
 
       //check for duplicate letters
       if (this.hasRepeatCharacters(actualWord)) {
-        
-        console.log("[DEBUG] Duplicate letters found...")
         
         //find duplicate letter(s)
         let checked = new Set();
@@ -126,9 +138,7 @@ export class HomeComponent {
       
       // if there are no repeated letters
       else {
-        console.log("[DEBUG] No duplicate letters.")
         word.forEach (letter => {
-          console.log("[DEBUG] For letter " + letter.letter + ", color " + letter.color.toString() + " in position " + letter.position + " filter added (new filter amount is " + filters.length + ")")
           switch (letter.color) 
           {
             case WordleColor.GRAY:
@@ -153,15 +163,11 @@ export class HomeComponent {
     
     
     let possibleWords = WordleWords
-    console.log("[DEBUG] Applying filters. Initial array size is " + possibleWords.length)
     filters.forEach(filter => {
       possibleWords = possibleWords.filter(filter)
-      console.log("[DEBUG] Filter applied. New length is " + possibleWords.length + ". Check against 'usual': " + filter("usual"))
     })
     
-    console.log("[DEBUG] Filtering complete, length of possible words is " + possibleWords.length)
-    
-    this.answers = possibleWords
+    this.answers = possibleWords.sort()
     
   }
   
@@ -187,7 +193,7 @@ export class HomeComponent {
 class WordleLetter {
   letter: string;
   color: WordleColor = WordleColor.GRAY;
-  style: string = 'style="background-color: white; text-color: black"';
+  style: string = '';
   position: number;
 
   constructor(letter: string, pos: number) {
@@ -199,20 +205,24 @@ class WordleLetter {
     return this.letter + '(' + this.color + ', ' + this.position + ')';
   }
 
-  parseColor(color: WordleColor) {
+  parseColor(color: WordleColor, isDarkMode: boolean) {
     switch (color) {
       case WordleColor.GRAY:
-        return '#787c7e';
+        return isDarkMode ? '#3a3a3c' : '#787c7e';
       case WordleColor.GREEN:
-        return '#6aaa64';
+        return isDarkMode ? '#538d4e' : '#6aaa64';
       case WordleColor.YELLOW:
-        return '#c9b458';
+        return isDarkMode ? '#b59f3b' : '#c9b458';
     }
   }
 
-  toggleColor() {
+  toggleColor(isDarkMode: boolean) {
     this.color = (this.color + 1) % 3;
-    this.style = this.parseColor(this.color);
+    this.updateColor(isDarkMode)
+  }
+  
+  updateColor(isDarkMode: boolean) {
+    this.style = this.parseColor(this.color, isDarkMode);
   }
 }
 

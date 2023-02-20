@@ -1,27 +1,13 @@
 # WordleSolver
 
+A sequel an old C# program I wrote, with some extra features and some of the kinks worked out.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
 
-## Development server
+## How it works
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Type in as many guesses as you'd like (not limited to 5 in order for compatibility with games like [Dordle](dordle.io/) and [Quordle](quordle.com/)). Click a letter to change its color to match what's given in the game, and then hit enter to see a list of valid guesses. Note that some words from non-Wordle games may not be present in the word pool. Sorry about that.
 
-## Code scaffolding
+## Options
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Hit the gear icon in the top right for settings. Presently, there are options for dark mode and high contrast mode.

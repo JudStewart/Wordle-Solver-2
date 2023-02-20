@@ -16,6 +16,10 @@ export class AppComponent {
   constructor(public dialog: MatDialog, private darkModeService: DarkModeServiceService) {}
   
   ngOnInit() {
+    
+    this.darkMode = (localStorage.getItem("darkMode") ?? "false") == "true"
+    this.className = this.darkMode ? 'darkMode' : ''
+    
     this.darkModeService.darkMode.subscribe(isDarkMode => {
       this.className = isDarkMode ? 'darkMode' : ''
       this.darkMode = isDarkMode
@@ -24,7 +28,8 @@ export class AppComponent {
   
   openSettingsDialog() {
     let dialogRef = this.dialog.open(SettingsComponent, {
-      width: '400px'
+      width: '400px',
+      // panelClass: this.darkMode ? 'dark-mode-modal-box' : undefined
     })
   }
 }

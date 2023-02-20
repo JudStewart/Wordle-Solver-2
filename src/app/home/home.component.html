@@ -1,7 +1,7 @@
-<body>
-<div class="wordle-container" mat-app-background>
+<body [ngStyle]="{'background-color': isDarkMode ? 'black' : 'white'}">
+<div class="wordle-container" mat-app-background  [ngStyle]="{'background-color': isDarkMode ? 'black' : 'white'}">
   <div id="guesses-container" *ngFor="let word of words" [ngStyle]="{'background-color': isDarkMode ? 'black' : 'white'}">
-    <div class="wordle-letter not-selectable" *ngFor="let letter of word" (click)="letter.toggleColor(isDarkMode)" [ngStyle]="{'background-color': letter.style}">
+    <div class="wordle-letter not-selectable" *ngFor="let letter of word" (click)="letter.toggleColor(isDarkMode, isHighContrastMode)" [ngStyle]="{'background-color': letter.style}">
       {{letter.letter}}
     </div>
   </div>

@@ -1,3 +1,4 @@
+<body [ngStyle]="{'background-color': darkMode ? 'black' : 'white'}">
 <mat-toolbar color="#ffffff" mat-app-background [ngStyle]="{'border-bottom': '1px solid ' + (darkMode ? '#818384' : '#d3d6da')}">
   <h1 style="margin: auto; font-size: 24pt;" [ngStyle]="{'color': darkMode ? 'white' : 'black'}">Wordle Solver 2</h1>
   <button mat-icon-button aria-label="Settings button" (click)="openSettingsDialog()">
@@ -6,3 +7,4 @@
 </mat-toolbar>
 
 <router-outlet mat-app-background></router-outlet>
+</body>

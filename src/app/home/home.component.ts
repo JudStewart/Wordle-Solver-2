@@ -5,6 +5,7 @@ import {
   QueryList,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
+import { ContrastModeService } from '../contrast-mode.service'
 import { DarkModeServiceService } from '../dark-mode-service.service'
 
 
@@ -27,15 +28,28 @@ export class HomeComponent {
   answers: Array<string> = [];
   
   isDarkMode = false;
+  isHighContrastMode = false;
   
-  constructor(public darkMode: DarkModeServiceService) {}
+  constructor(public darkMode: DarkModeServiceService, public contrastModeService: ContrastModeService) {}
   
   ngOnInit() {
+    
+    this.isDarkMode = (localStorage.getItem("darkMode") ?? "false") == "true"
+    
     this.darkMode.darkMode.subscribe((darkMode) => {
       this.className = darkMode ? 'darkMode' : ''
       this.isDarkMode = darkMode
       this.words.forEach((word) => {
-        word.forEach((letter) => letter.updateColor(this.isDarkMode))
+        word.forEach((letter) => letter.updateColor(this.isDarkMode, this.isHighContrastMode))
+      })
+    })
+    
+    this.isHighContrastMode = (localStorage.getItem("highContrastMode") ?? "false") == "true"
+    
+    this.contrastModeService.contrastMode.subscribe((contrastMode) => {
+      this.isHighContrastMode = contrastMode
+      this.words.forEach((word) => {
+        word.forEach((letter) => letter.updateColor(this.isDarkMode, this.isHighContrastMode))
       })
     })
   }
@@ -46,8 +60,8 @@ export class HomeComponent {
       last = [];
       this.words.push(last);
     }
-    if (last.length != 5) last?.push(new WordleLetter(c, last.length));
-    else this.words.push([new WordleLetter(c, 0)]);
+    if (last.length != 5) last?.push(new WordleLetter(c, last.length, this.isDarkMode));
+    else this.words.push([new WordleLetter(c, 0, this.isDarkMode)]);
   }
 
   backspace() {
@@ -196,33 +210,46 @@ class WordleLetter {
   style: string = '';
   position: number;
 
-  constructor(letter: string, pos: number) {
+  constructor(letter: string, pos: number, isDarkMode: boolean) {
     this.letter = letter;
     this.position = pos;
+    // We can assume false here because the gray doesn't change with high contrast
+    this.style = this.parseColor(WordleColor.GRAY, isDarkMode, false)
   }
 
   toString(): string {
     return this.letter + '(' + this.color + ', ' + this.position + ')';
   }
 
-  parseColor(color: WordleColor, isDarkMode: boolean) {
-    switch (color) {
+  parseColor(color: WordleColor, isDarkMode: boolean, isHighContrastMode: boolean) {
+    if (!isHighContrastMode) {
+      switch (color) {
+        case WordleColor.GRAY:
+          return isDarkMode ? '#3a3a3c' : '#787c7e';
+        case WordleColor.GREEN:
+          return isDarkMode ? '#538d4e' : '#6aaa64';
+        case WordleColor.YELLOW:
+          return isDarkMode ? '#b59f3b' : '#c9b458';
+      }
+    }
+    
+    switch(color) {
       case WordleColor.GRAY:
-        return isDarkMode ? '#3a3a3c' : '#787c7e';
-      case WordleColor.GREEN:
-        return isDarkMode ? '#538d4e' : '#6aaa64';
-      case WordleColor.YELLOW:
-        return isDarkMode ? '#b59f3b' : '#c9b458';
+          return isDarkMode ? '#3a3a3c' : '#787c7e';
+        case WordleColor.GREEN:
+          return '#f5793a';
+        case WordleColor.YELLOW:
+          return '#85c0f9';
     }
   }
 
-  toggleColor(isDarkMode: boolean) {
+  toggleColor(isDarkMode: boolean, isHighContrastMode: boolean) {
     this.color = (this.color + 1) % 3;
-    this.updateColor(isDarkMode)
+    this.updateColor(isDarkMode, isHighContrastMode)
   }
   
-  updateColor(isDarkMode: boolean) {
-    this.style = this.parseColor(this.color, isDarkMode);
+  updateColor(isDarkMode: boolean, isHighContrastMode: boolean) {
+    this.style = this.parseColor(this.color, isDarkMode, isHighContrastMode);
   }
 }
 
